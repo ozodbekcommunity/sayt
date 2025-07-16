@@ -40,20 +40,35 @@
 </head>
 <body>
     <h2>Telegram WebApp</h2>
-  <input id="user-input" type="text" placeholder="Enter some data" />
-  <button id="send-btn">Send Data</button>
-  <script>
-    const tg = window.Telegram.WebApp;
-    tg.ready();
- 
-    document.getElementById('send-btn').addEventListener('click', () => {
-        const userInput = document.getElementById('user-input').value;
+    <input id="user-input" type="text" placeholder="Ma'lumot kiriting" />
+    <button id="send-btn">Ma'lumot yuborish</button>
+    
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.ready();
         
-        tg.sendData(JSON.stringify({
-            timestamp: Date.now(),
-            userInput: userInput
-        }));
-    });
+        // Main button ni yoqish (ixtiyoriy)
+        tg.MainButton.text = "Ma'lumot yuborish";
+        tg.MainButton.show();
+        
+        function sendData() {
+            const userInput = document.getElementById('user-input').value;
+            
+            if (userInput.trim()) {
+                tg.sendData(JSON.stringify({
+                    timestamp: Date.now(),
+                    userInput: userInput
+                }));
+            } else {
+                tg.showAlert("Iltimos, ma'lumot kiriting!");
+            }
+        }
+        
+        // Tugma bosilganda
+        document.getElementById('send-btn').addEventListener('click', sendData);
+        
+        // Main button bosilganda
+        tg.MainButton.onClick(sendData);
     </script>
 </body>
 </html>
